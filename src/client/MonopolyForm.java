@@ -270,14 +270,16 @@ public class MonopolyForm extends javax.swing.JFrame {
         ImageIcon dLeft = new ImageIcon("src/img/One.png");
         ImageIcon dRight = new ImageIcon("src/img/Two.png");
         DialogTossDices dialog = new DialogTossDices(this, true, dLeft, dRight);
-        dialog.getContentPane().setBackground(new Color(1, 2, 6));
+        dialog.getContentPane().setBackground(new Color(34, 139, 34));
+        dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
     }//GEN-LAST:event_tossDiceBtnActionPerformed
 
     private void movePlayerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_movePlayerBtnActionPerformed
         ImageIcon img = new ImageIcon("src/img/SLN.png");
         DialogProperty dialog = new DialogProperty(this, true, img);
-        dialog.getContentPane().setBackground(new Color(1, 2, 6));
+        dialog.getContentPane().setBackground(new Color(34, 139, 34));
+        dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
     }//GEN-LAST:event_movePlayerBtnActionPerformed
 
