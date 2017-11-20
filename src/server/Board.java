@@ -103,7 +103,7 @@ public class Board {
 	}
 	
 	public int normalizePosition(int position) {
-		return position % squares.length;
+		return position % squares.size();
 	}
 	
 	public Player getCurrentPlayer() {
@@ -130,9 +130,23 @@ public class Board {
         public String buyHouse(String namePlayer,String namePropertie) {
                 String response;
                 Player player=players.get(indexPlayer(namePlayer));
-                namePlayer.equals(squares.get(player.getCurrentPosition()));
-                if(player.getProperties().contains(namePropertie)){//si es mi propiedad
-                    if(player.getMoney().getMoney()>=player.getProperties().indexOf()){
+                Square squareAct=squares.get(player.getCurrentPosition());
+                if(namePlayer.equals(squareAct.getOwner())){//si es mi propiedad
+                    if(squareAct.getNumHouses()<4){//si aun puedo comprar una casa más
+                        if(player.getMoney().getMoney()>=squareAct.getHousePrice()){//si tengo dinero suficiente para comprar la casa
+                            player.getMoney().substractMoney(squareAct.getHousePrice());
+                            if (squareAct.getNumHouses()<3) {
+                                squareAct.addHouse();
+                                response="has comprado una casa";
+                            }else{
+                                squareAct.setHotel(true);
+                                response="Has comprado un hotel";
+                            }
+                        }else{
+                            response="No posee dinero suficicente para comprar la casa";
+                        } 
+                    }else{
+                        response="Limite de casas para esta propiedad";
                     }
                 }else
                     response="No puedes comprar en esta propiedad (no es tuya)";

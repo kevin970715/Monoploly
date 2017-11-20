@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package interfaces;
 
 import java.rmi.Remote;
@@ -16,5 +11,5 @@ public interface MonopolyInterface extends Remote {
     
     public boolean logIn(String name)throws RemoteException;
     public boolean logOut(String name) throws RemoteException;
-    public int 
+    public int tosseDice(String name)  throws RemoteException;
 }

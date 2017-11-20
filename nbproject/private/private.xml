@@ -4,11 +4,16 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/user1/Documents/NetBeansProjects/Monopoly/src/server/Board.java</file>
+            <file>file:/C:/Users/user1/Documents/NetBeansProjects/Monopoly/src/server/VacationSquare.java</file>
             <file>file:/C:/Users/user1/Documents/NetBeansProjects/Monopoly/src/server/Square.java</file>
             <file>file:/C:/Users/user1/Documents/NetBeansProjects/Monopoly/src/server/Player.java</file>
+            <file>file:/C:/Users/user1/Documents/NetBeansProjects/Monopoly/src/server/GoToJailSquare.java</file>
             <file>file:/C:/Users/user1/Documents/NetBeansProjects/Monopoly/src/client/DialogTossDices.java</file>
+            <file>file:/C:/Users/user1/Documents/NetBeansProjects/Monopoly/src/server/Monopoly.java</file>
             <file>file:/C:/Users/user1/Documents/NetBeansProjects/Monopoly/src/server/PropertieSquare.java</file>
             <file>file:/C:/Users/user1/Documents/NetBeansProjects/Monopoly/src/client/MonopolyForm.java</file>
+            <file>file:/C:/Users/user1/Documents/NetBeansProjects/Monopoly/src/server/Util.java</file>
+            <file>file:/C:/Users/user1/Documents/NetBeansProjects/Monopoly/src/server/JailSquare.java</file>
         </group>
     </open-files>
 </project-private>
