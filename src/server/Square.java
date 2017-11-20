@@ -10,5 +10,5 @@ public abstract class Square {
 		return name;
 	}
 	
-	public abstract void doAction(Player player, Board board);
+	public abstract String doAction(Player player, String action);
 }

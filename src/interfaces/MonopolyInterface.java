@@ -16,5 +16,5 @@ public interface MonopolyInterface extends Remote {
     
     public boolean logIn(String name)throws RemoteException;
     public boolean logOut(String name) throws RemoteException;
-    
+    public int 
 }

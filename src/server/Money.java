@@ -21,7 +21,7 @@ public class Money {
 	public void substractMoney(int amount) {
 		money -= amount;
 	}
-	
+        
 	public boolean isBrokeOut() {
 		return money < 0;
 	}

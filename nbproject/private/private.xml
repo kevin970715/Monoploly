@@ -3,13 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/user1/Documents/NetBeansProjects/Monopoly/src/interfaces/MonopolyInterface.java</file>
             <file>file:/C:/Users/user1/Documents/NetBeansProjects/Monopoly/src/server/Board.java</file>
             <file>file:/C:/Users/user1/Documents/NetBeansProjects/Monopoly/src/server/Square.java</file>
             <file>file:/C:/Users/user1/Documents/NetBeansProjects/Monopoly/src/server/Player.java</file>
             <file>file:/C:/Users/user1/Documents/NetBeansProjects/Monopoly/src/server/Monopoly.java</file>
-            <file>file:/C:/Users/user1/Documents/NetBeansProjects/Monopoly/src/server/Money.java</file>
             <file>file:/C:/Users/user1/Documents/NetBeansProjects/Monopoly/src/server/GoSquare.java</file>
+            <file>file:/C:/Users/user1/Documents/NetBeansProjects/Monopoly/src/server/Properties.java</file>
+            <file>file:/C:/Users/user1/Documents/NetBeansProjects/Monopoly/src/server/Die.java</file>
+            <file>file:/C:/Users/user1/Documents/NetBeansProjects/Monopoly/src/server/Util.java</file>
             <file>file:/C:/Users/user1/Documents/NetBeansProjects/Monopoly/src/server/JailSquare.java</file>
+            <file>file:/C:/Users/user1/Documents/NetBeansProjects/Monopoly/src/server/HouseSquare.java</file>
         </group>
     </open-files>
 </project-private>
