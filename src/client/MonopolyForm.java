@@ -103,11 +103,21 @@ public class MonopolyForm extends javax.swing.JFrame {
         tossDiceBtn.setForeground(new java.awt.Color(255, 255, 255));
         tossDiceBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/dice.png"))); // NOI18N
         tossDiceBtn.setText("Toss Dice");
+        tossDiceBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tossDiceBtnActionPerformed(evt);
+            }
+        });
 
         movePlayerBtn.setBackground(new java.awt.Color(0, 0, 0));
         movePlayerBtn.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         movePlayerBtn.setForeground(new java.awt.Color(255, 255, 255));
         movePlayerBtn.setText("Move piece");
+        movePlayerBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                movePlayerBtnActionPerformed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Consolas", 1, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 0, 153));
@@ -255,6 +265,21 @@ public class MonopolyForm extends javax.swing.JFrame {
         Icon tablero= new ImageIcon(imagenTablero.getImage().getScaledInstance(tableroMonopoly.getWidth(), tableroMonopoly.getHeight(), Image.SCALE_DEFAULT));
         tableroMonopoly.setIcon(tablero);
     }//GEN-LAST:event_startGameBtnActionPerformed
+
+    private void tossDiceBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tossDiceBtnActionPerformed
+        ImageIcon dLeft = new ImageIcon("src/img/One.png");
+        ImageIcon dRight = new ImageIcon("src/img/Two.png");
+        DialogTossDices dialog = new DialogTossDices(this, true, dLeft, dRight);
+        dialog.getContentPane().setBackground(new Color(1, 2, 6));
+        dialog.setVisible(true);
+    }//GEN-LAST:event_tossDiceBtnActionPerformed
+
+    private void movePlayerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_movePlayerBtnActionPerformed
+        ImageIcon img = new ImageIcon("src/img/SLN.png");
+        DialogProperty dialog = new DialogProperty(this, true, img);
+        dialog.getContentPane().setBackground(new Color(1, 2, 6));
+        dialog.setVisible(true);
+    }//GEN-LAST:event_movePlayerBtnActionPerformed
 
     /**
      * @param args the command line arguments
