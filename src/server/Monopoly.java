@@ -6,7 +6,7 @@ public class Monopoly {
 	Die die = new Die();
 	Board board;
 	
-	public Monopoly() {
+	public Monopoly() throws RemoteException {
 		board = new Board();
 	}
 	

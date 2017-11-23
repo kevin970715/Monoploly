@@ -19,6 +19,7 @@ public interface MonopolyInterface extends Remote {
     public int tosseDice() throws RemoteException;
     public String buyHouse(String name,String nameProperty) throws RemoteException;
     public String buyProperty(String name,String nameProperty) throws RemoteException;
+    public String buyTrain(String name,String nameTrain) throws RemoteException;
     public Player getCurrentPlayer() throws RemoteException;
     public ArrayList<Player> getPlayers() throws RemoteException;
     public void brokeOut(String name) throws RemoteException;

@@ -9,9 +9,9 @@ public class Square {
 	int price=0;
 	String color=null;
         int numHouses=0;
-        boolean hotel;
-        boolean hipotecada;
-        boolean haveOwner;
+        boolean hotel=false;
+        boolean hipotecada=false;
+        boolean haveOwner=false;
         int housePrice;
         Map<String,Integer> chargePrices = new HashMap<>();
         
@@ -43,9 +43,6 @@ public class Square {
 		this.name = name;
                 this.price = price;
                 this.color = color;
-                this.hotel=false;
-                this.hipotecada=false;
-                this.haveOwner=false;
                 this.housePrice=housePrice;
                 this.chargePrices.put("hire", hire);
                 this.chargePrices.put("hOneHouse", hOneHouse);
@@ -88,10 +85,30 @@ public class Square {
                 return housePrice;
         }
         
-        public int getChargePrice(String data) {
-                return chargePrices.get(data);
+        public int getChargePriceProperty() {
+            switch (this.numHouses) {
+                case 0:
+                    return this.chargePrices.get("hire");
+                case 1:
+                    return this.chargePrices.get("hOneHouse");
+                case 2:
+                    return this.chargePrices.get("hTwoHouse");
+                case 3:
+                    return this.chargePrices.get("hThreeHouse");
+                case 4:
+                    return this.chargePrices.get("hFourHouse");
+            }
+            return this.chargePrices.get("hFourHouse");
         }
 
+        public int getMortgage(){
+            return chargePrices.get("mortgage");
+        }
+        
+        public int getChargePriceTrain(){
+            return chargePrices.get("hire");
+        } 
+        
         public int getNumHouses() {
             return numHouses;
         }
@@ -116,6 +133,17 @@ public class Square {
             this.hipotecada = hipotecada;
         }
 
+        public void reset(){
+            this.name=null;
+            this.owner=null;
+            this.price=0;
+            this.color=null;
+            this.numHouses=0;
+            this.hotel=false;
+            this.hipotecada=false;
+            this.haveOwner=false;
+        }
+        
         public void goAction(Player player, Board board) {
             player.addMessage("+400 monedas por caer en go");
             board.messageAllPlayer(player.getName(),player.getName()+": +400 monedas");
@@ -169,5 +197,23 @@ public class Square {
             player.addMessage("Impuesto de lujo: -100 monedas");
             board.messageAllPlayer(player.getName(),player.getName()+": -100 monedas");
             player.getMoney().substractMoney(100);
+        }
+        
+        public void collectRentProperty(Player player, Player owner, Board board){
+            int hire=this.getChargePriceProperty();
+            player.getMoney().substractMoney(hire);
+            player.addMessage("-"+hire+" por la renta");
+            board.messageAllPlayer(player.getName(),player.getName()+": -"+hire+" por renta");
+            owner.getMoney().addMoney(hire);
+            owner.addMessage("+"+hire+" por renta cobrada");
+        }
+        
+        public void collectRentTrain(Player player,Player owner,Board board){
+            int hire=owner.getNumTrenes()*this.getChargePriceTrain();
+            player.getMoney().substractMoney(hire);
+            player.addMessage("-"+hire+" por la renta de tren");
+            board.messageAllPlayer(player.getName(),player.getName()+": -"+hire+" por renta de tren");
+            owner.getMoney().addMoney(hire);
+            owner.addMessage("+"+hire+" por renta de tren cobrada");
         }
 }
