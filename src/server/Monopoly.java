@@ -1,15 +1,16 @@
 package server;
+import java.rmi.RemoteException;
 import java.util.Scanner;
 
 public class Monopoly {
 	Die die = new Die();
 	Board board;
 	
-	public Monopoly(int totalPlayer) {
-		board = new Board(totalPlayer);
+	public Monopoly() {
+		board = new Board();
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws RemoteException {
 		System.out.println("\tMonopoly\n");
 		Scanner scanner = new Scanner(System.in);
 		int totalPlayer = 0;
@@ -28,17 +29,18 @@ public class Monopoly {
 			}
 		}
 		scanner.close();
-		Monopoly game = new Monopoly(totalPlayer);
+		Monopoly game = new Monopoly();
 		game.startGame();
 	}
 	
-	public void startGame() {
+	public void startGame() throws RemoteException {
 		System.out.println("Game start!");
 		System.out.println("========");
-		while (!isGameEnd() && !board.hasWinner()){
+		while (!board.hasWinner()){
 			if(!board.getCurrentPlayer().isBrokeOut()){
-				int face = board.getCurrentPlayer().tossDie(die);
-				board.movePlayer(board.getCurrentPlayer(), face);
+				int face1 = board.tosseDice();
+                                int face2 = board.tosseDice();
+				board.movePlayer(board.getCurrentPlayer().getName(), face1,face2);
 			}
 			board.nextTurn();
 		}
@@ -51,10 +53,4 @@ public class Monopoly {
 		System.out.println("Game over!");
 	}
 	
-	public boolean isGameEnd() {
-		for(Player player:board.getPlayers()){
-			if(player.getTotalWalk() < 20){ return false; }
-		}
-		return true;
-	}
 }
