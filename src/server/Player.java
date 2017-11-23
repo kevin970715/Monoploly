@@ -3,37 +3,40 @@ package server;
 import java.util.ArrayList;
 
 public class Player {
-	int totalWalk = 0;
+	int attempts = 0;
+        int raffle=0;
 	int position = 0;
-	String name;
 	boolean brokeout = false;
+        boolean inJail=false;
+        int numTrenes=0;
+        String name;
 	private final Money money;
         private final ArrayList<String> messages;
-        
+                
 	public Player(String name){
 		this.name = name;
                 this.money = new Money(1500);   
                 this.messages=new ArrayList<>();       
 	}
         
-	public int getTotalWalk() {
-		return totalWalk;
+	public int getAttempts() {
+		return attempts;
+        }
+        
+	public void addAttempts() {
+		attempts++;
 	}
-	
-	public int tossDie(Die die) {
-		return die.getFace();
+        
+	public void setAttempts(int n) {
+		this.attempts=n;
 	}
-	
+        
 	public int getCurrentPosition() {
 		return position;
 	}
 	
-	public void setPosition(int position) {
+	public void setCurrentPosition(int position) {
 		this.position = position;
-	}
-	
-	public void nextTurn() {
-		totalWalk++;
 	}
 	
 	public String getName() {
@@ -66,4 +69,29 @@ public class Player {
         public void addMessage(String message) {
             messages.add(message);
         } 
+        
+        public int getNumTrenes(){
+            return numTrenes;
+        }
+        
+        public void addTren(){
+            this.numTrenes++;
+        }
+        
+        public int getRaffle(){
+            return raffle;
+        }
+        
+        public void setRaffle(int face1,int face2){
+            this.raffle=face1+face2;
+        }
+
+        public boolean isInJail() {
+            return inJail;
+        }
+
+        public void setInJail(boolean inJail) {
+            this.inJail = inJail;
+        }  
+        
 }

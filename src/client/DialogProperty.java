@@ -48,7 +48,6 @@ public class DialogProperty extends javax.swing.JDialog {
         auctionBtn = new javax.swing.JButton();
         buyBtn = new javax.swing.JButton();
         payRentBtn = new javax.swing.JButton();
-        endTurnBtn = new javax.swing.JButton();
         mortgageBtn = new javax.swing.JButton();
         payMortgageBtn = new javax.swing.JButton();
         buyHouseBtn = new javax.swing.JButton();
@@ -92,15 +91,6 @@ public class DialogProperty extends javax.swing.JDialog {
         payRentBtn.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         payRentBtn.setText("Pay rent");
 
-        endTurnBtn.setBackground(new java.awt.Color(153, 0, 0));
-        endTurnBtn.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        endTurnBtn.setText("End turn");
-        endTurnBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                endTurnBtnActionPerformed(evt);
-            }
-        });
-
         mortgageBtn.setBackground(new java.awt.Color(195, 194, 194));
         mortgageBtn.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         mortgageBtn.setText("Mortgage");
@@ -143,25 +133,21 @@ public class DialogProperty extends javax.swing.JDialog {
                             .addComponent(buyBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(auctionBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(31, 31, 31)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(payRentBtn)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(buyHouseBtn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(mortgageBtn))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(sellHouseBtn)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                                .addComponent(payMortgageBtn))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(buyHouseBtn)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(mortgageBtn)))))
+                                .addComponent(payMortgageBtn)))))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(payRentBtn)
-                .addGap(55, 55, 55)
-                .addComponent(endTurnBtn)
-                .addGap(93, 93, 93))
         );
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {endTurnBtn, payRentBtn});
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {mortgageBtn, payMortgageBtn});
 
@@ -195,26 +181,17 @@ public class DialogProperty extends javax.swing.JDialog {
                     .addComponent(payMortgageBtn)
                     .addComponent(sellHouseBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(endTurnBtn)
-                    .addComponent(payRentBtn))
+                .addComponent(payRentBtn)
                 .addContainerGap())
         );
 
-        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {endTurnBtn, payRentBtn});
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void endTurnBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_endTurnBtnActionPerformed
-        this.dispose();
-    }//GEN-LAST:event_endTurnBtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton auctionBtn;
     private javax.swing.JButton buyBtn;
     private javax.swing.JButton buyHouseBtn;
-    private javax.swing.JButton endTurnBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
