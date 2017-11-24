@@ -51,6 +51,9 @@ public class MonopolyForm extends javax.swing.JFrame {
         recordZone = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Monopoly");
+        setMinimumSize(new java.awt.Dimension(1300, 740));
+        setPreferredSize(new java.awt.Dimension(1300, 740));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -97,8 +100,6 @@ public class MonopolyForm extends javax.swing.JFrame {
         pieceImg.setMinimumSize(new java.awt.Dimension(20, 20));
         pieceImg.setPreferredSize(new java.awt.Dimension(20, 20));
         getContentPane().add(pieceImg, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 620, 35, 35));
-        pieceImg.getAccessibleContext().setAccessibleName("");
-
         getContentPane().add(tableroMonopoly, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 82, 1010, 628));
 
         logOutBtn.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
