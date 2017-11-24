@@ -10,7 +10,7 @@ public class Square {
 	String color=null;
         int numHouses=0;
         boolean hotel=false;
-        boolean hipotecada=false;
+        boolean morgage=false;
         boolean haveOwner=false;
         int housePrice;
         Map<String,Integer> chargePrices = new HashMap<>();
@@ -100,10 +100,6 @@ public class Square {
             }
             return this.chargePrices.get("hFourHouse");
         }
-
-        public int getMortgage(){
-            return chargePrices.get("mortgage");
-        }
         
         public int getChargePriceTrain(){
             return chargePrices.get("hire");
@@ -125,12 +121,16 @@ public class Square {
             this.hotel = hotel;
         }
 
-        public boolean isHipotecada() {
-            return hipotecada;
+        public boolean isMortgaged() {
+            return morgage;
         }
 
-        public void setHipotecada(boolean hipotecada) {
-            this.hipotecada = hipotecada;
+        public void setMortgaged(boolean state) {
+            this.morgage = state;
+        }
+
+        public int getMortgage(){
+            return chargePrices.get("mortgage");
         }
 
         public void reset(){
@@ -140,7 +140,7 @@ public class Square {
             this.color=null;
             this.numHouses=0;
             this.hotel=false;
-            this.hipotecada=false;
+            this.morgage=false;
             this.haveOwner=false;
         }
         
