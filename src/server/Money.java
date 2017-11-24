@@ -1,5 +1,8 @@
 package server;
-public class Money {
+
+import java.io.Serializable;
+
+public class Money implements Serializable{
 	int money;
 	
 	public Money() {

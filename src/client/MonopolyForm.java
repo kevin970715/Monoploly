@@ -1,33 +1,64 @@
 package client;
 
+import interfaces.MonopolyInterface;
 import java.awt.Color;
 import java.awt.Image;
+<<<<<<< HEAD
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+=======
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import server.Player;
+
+>>>>>>> 7fe0eacb4395143fe130e12b634f70e541388669
 /**
  *
  * @author Flia Alcalá Castro
  */
 public class MonopolyForm extends javax.swing.JFrame {
 
-    /**
-     * Creates new form MonopolyForm
-     */
     String src;
+<<<<<<< HEAD
     int x;
     int y;
     int actSquare;
     int finSquare;
     
+=======
+    String name;
+    MonopolyInterface mi;
+    DefaultListModel model;
+    ThreadClient thread;
+    int face1,face2;
+>>>>>>> 7fe0eacb4395143fe130e12b634f70e541388669
     public MonopolyForm() {
         initComponents();
+        logInBtn.setEnabled(false);
+        logOutBtn.setEnabled(false);
+        startGameBtn.setEnabled(false);
+        tossDiceBtn.setEnabled(false);
+        movePlayerBtn.setEnabled(false);
         this.getContentPane().setBackground(new Color(1, 2, 6));
         jPanel1.setBackground(new Color(34, 139, 34));
         pieceImg.setFocusable(true);
+<<<<<<< HEAD
         
+=======
+        model = new DefaultListModel();
+>>>>>>> 7fe0eacb4395143fe130e12b634f70e541388669
     }
 
     @SuppressWarnings("unchecked")
@@ -80,6 +111,11 @@ public class MonopolyForm extends javax.swing.JFrame {
         connectHostBtn.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         connectHostBtn.setForeground(new java.awt.Color(0, 0, 204));
         connectHostBtn.setText("Connect");
+        connectHostBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                connectHostBtnActionPerformed(evt);
+            }
+        });
         getContentPane().add(connectHostBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(194, 46, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Consolas", 1, 18)); // NOI18N
@@ -88,8 +124,7 @@ public class MonopolyForm extends javax.swing.JFrame {
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(291, 48, -1, -1));
 
         piecePlayer.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
-        piecePlayer.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select one", "Carretilla", "Buque de guerra", "Vehiculo", "Dedal", "Zapato antiguo", "Perro terrier", "Sombrero de copa", "Plancha" }));
-        getContentPane().add(piecePlayer, new org.netbeans.lib.awtextra.AbsoluteConstraints(481, 47, -1, -1));
+        getContentPane().add(piecePlayer, new org.netbeans.lib.awtextra.AbsoluteConstraints(481, 47, 140, -1));
 
         logInBtn.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         logInBtn.setForeground(new java.awt.Color(0, 153, 0));
@@ -229,19 +264,62 @@ public class MonopolyForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public void addPlayers(ArrayList<Player> players){
+        model.removeAllElements();
+        for (Player player : players)
+            model.addElement(player.getName()+", "+player.getMoney().getMoney());
+        jList1.setModel(model);
+    }
+
+    public void showTurn(String t){
+        turn.setText(t);
+    }
+       
+    public void addMessaje(String msj){
+        if(!msj.equals("")){
+            msj=recordZone.getText()+"\n"+msj;
+            recordZone.setText(msj);
+        }
+    }
+    
     private void startGameBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startGameBtnActionPerformed
-        ImageIcon imagenTablero = new ImageIcon("src/img/tableroMonopoly.jpg");
-        Icon tablero= new ImageIcon(imagenTablero.getImage().getScaledInstance(tableroMonopoly.getWidth(), tableroMonopoly.getHeight(), Image.SCALE_DEFAULT));
-        tableroMonopoly.setIcon(tablero);
-        
-        ImageIcon imagePiece = new ImageIcon(src);
-        Icon piece= new ImageIcon(imagePiece.getImage().getScaledInstance(pieceImg.getWidth(), pieceImg.getHeight(), Image.SCALE_DEFAULT));
-        pieceImg.setIcon(piece);
+        try {
+            if(mi.startGame())
+                startGameBtn.setEnabled(false);
+        } catch (RemoteException ex) {
+            Logger.getLogger(MonopolyForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_startGameBtnActionPerformed
 
     private void tossDiceBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tossDiceBtnActionPerformed
-        ImageIcon dLeft = new ImageIcon("src/img/One.png");
-        ImageIcon dRight = new ImageIcon("src/img/Two.png");
+        try {
+            face1=mi.tosseDice();
+            face2=mi.tosseDice();
+            if(mi.getTurn().equals(name))
+                movePlayerBtn.setEnabled(true);        
+        } catch (RemoteException ex) {
+            ex.printStackTrace();
+        }
+        String nameImg = null;
+        String nameImg2 = null; 
+        switch(face1){
+            case 1: nameImg="One"; break;
+            case 2: nameImg="Two"; break;
+            case 3: nameImg="Three"; break;
+            case 4: nameImg="Four"; break;
+            case 5: nameImg="Five"; break;
+            case 6: nameImg="Six"; break;
+        }
+        switch(face2){
+            case 1: nameImg2="One"; break;
+            case 2: nameImg2="Two"; break;
+            case 3: nameImg2="Three"; break;
+            case 4: nameImg2="Four"; break;
+            case 5: nameImg2="Five"; break;
+            case 6: nameImg2="Six"; break;           
+        }
+        ImageIcon dLeft = new ImageIcon("src/img/"+nameImg+".png");
+        ImageIcon dRight = new ImageIcon("src/img/"+nameImg2+".png");
         DialogTossDices dialog = new DialogTossDices(this, true, dLeft, dRight);
         dialog.getContentPane().setBackground(new Color(1, 2, 6));
         dialog.setLocationRelativeTo(null);
@@ -249,6 +327,7 @@ public class MonopolyForm extends javax.swing.JFrame {
     }//GEN-LAST:event_tossDiceBtnActionPerformed
 
     private void movePlayerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_movePlayerBtnActionPerformed
+<<<<<<< HEAD
         actSquare = 38;//Posición actual de la ficha en el tablero (Square), se obtiene con getCurrentPosition del player
         finSquare = 4;//Posición final de la ficha en el tablero (Square), se obtiene con moverFicha del player
         x=pieceImg.getX();
@@ -318,15 +397,76 @@ public class MonopolyForm extends javax.swing.JFrame {
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
         
+=======
+        int numCarta=0;
+        String carta=null;
+        try{
+            numCarta=mi.movePlayer(name, face1, face2);
+        } catch (RemoteException ex) {
+            Logger.getLogger(MonopolyForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        switch(numCarta){
+            
+            case 5: case 15: case 25: case 35:
+//trenes
+                break;
+        }
+        if(carta!=null){
+            ImageIcon img = new ImageIcon("src/img/"+carta+".png");
+            DialogProperty dialog = new DialogProperty(this, true, img);
+            dialog.getContentPane().setBackground(new Color(1, 2, 6));
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
+        }
+        movePlayerBtn.setEnabled(false);
+>>>>>>> 7fe0eacb4395143fe130e12b634f70e541388669
     }//GEN-LAST:event_movePlayerBtnActionPerformed
 
     private void logInBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logInBtnActionPerformed
         if(piecePlayer.getSelectedItem().equals("Select one")){
             JOptionPane.showMessageDialog(null, "No has seleccionado una pieza.", "Error", JOptionPane.ERROR_MESSAGE);
+        }else{
+            name=(String) piecePlayer.getSelectedItem();
+            try {
+                if(mi.logIn(name)){
+                    if (name.equals(mi.getPlayers().get(0).getName()))
+                        startGameBtn.setEnabled(true);
+                    else
+                        recordZone.setText("Espere a iniciar el juego");
+                    src="src/img/"+name+".png";
+                    logOutBtn.setEnabled(true);
+                    tossDiceBtn.setEnabled(true);
+                    mi.removePossiblesNames(name);
+                    logInBtn.setEnabled(false);
+                    thread = new ThreadClient(this,mi,name);
+                    thread.start();
+                    ImageIcon imagenTablero = new ImageIcon("src/img/tableroMonopoly.jpg");
+                    Icon tablero= new ImageIcon(imagenTablero.getImage().getScaledInstance(tableroMonopoly.getWidth(), tableroMonopoly.getHeight(), Image.SCALE_DEFAULT));
+                    tableroMonopoly.setIcon(tablero);
+                    ImageIcon imagePiece = new ImageIcon(src);
+                    Icon piece= new ImageIcon(imagePiece.getImage().getScaledInstance(pieceImg.getWidth(), pieceImg.getHeight(), Image.SCALE_DEFAULT));
+                    pieceImg.setIcon(piece);
+                }else{
+                    JOptionPane.showMessageDialog(null, "El nombre ya fue escogido. Seleccion otro.", "Escoge otro nombre", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (RemoteException ex) {
+                ex.printStackTrace();
+            }
         }
-        else
-            src="src/img/"+piecePlayer.getSelectedItem()+".png";
     }//GEN-LAST:event_logInBtnActionPerformed
+
+    private void connectHostBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectHostBtnActionPerformed
+        try {
+            String hostName=host.getText();
+            mi=(MonopolyInterface) Naming.lookup("rmi://"+hostName+"/monopoly");
+            logInBtn.setEnabled(true);
+            connectHostBtn.setEnabled(false);
+            for(String pName: mi.getPossiblesNames())
+                piecePlayer.addItem(pName);
+        } catch (MalformedURLException | NotBoundException | RemoteException ex) {
+            JOptionPane.showMessageDialog(null, "Error en la conexión", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_connectHostBtnActionPerformed
 
     /**
      * @param args the command line arguments

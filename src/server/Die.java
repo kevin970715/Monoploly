@@ -1,12 +1,10 @@
 package server;
-import java.util.Random;
+import java.io.Serializable;
 
-
-public class Die {
+public class Die implements Serializable{
 
 	public int getFace() {
-		Random rand = new Random();
-		int face = 1+rand.nextInt(6);
+		int face=(int)(Math.random()*6)+1;
 		return face;
 	}
 }
