@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Image;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -14,10 +15,13 @@ public class MonopolyForm extends javax.swing.JFrame {
     /**
      * Creates new form MonopolyForm
      */
+    String src;
+    
     public MonopolyForm() {
         initComponents();
         this.getContentPane().setBackground(new Color(1, 2, 6));
         jPanel1.setBackground(new Color(34, 139, 34));
+        pieceImg.setFocusable(true);
     }
 
     @SuppressWarnings("unchecked")
@@ -29,8 +33,9 @@ public class MonopolyForm extends javax.swing.JFrame {
         host = new javax.swing.JTextField();
         connectHostBtn = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        figurePlayer = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
+        piecePlayer = new javax.swing.JComboBox<>();
+        logInBtn = new javax.swing.JButton();
+        pieceImg = new javax.swing.JLabel();
         tableroMonopoly = new javax.swing.JLabel();
         logOutBtn = new javax.swing.JButton();
         startGameBtn = new javax.swing.JButton();
@@ -47,36 +52,59 @@ public class MonopolyForm extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Consolas", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("¡Welcome to Monopoly!");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(471, 11, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Consolas", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(204, 102, 0));
         jLabel2.setText("Host:");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 48, -1, -1));
 
         host.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         host.setMinimumSize(new java.awt.Dimension(6, 25));
+        getContentPane().add(host, new org.netbeans.lib.awtextra.AbsoluteConstraints(64, 47, 120, -1));
 
         connectHostBtn.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         connectHostBtn.setForeground(new java.awt.Color(0, 0, 204));
         connectHostBtn.setText("Connect");
+        getContentPane().add(connectHostBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(194, 46, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Consolas", 1, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(204, 102, 0));
         jLabel3.setText("Choose your piece:");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(291, 48, -1, -1));
 
-        figurePlayer.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
-        figurePlayer.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select one", "Carretilla", "Buque de guerra", "Vehículo", "Dedal", "Zapato antiguo", "Perro terrier", "Sombrero de copa", "Plancha" }));
+        piecePlayer.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        piecePlayer.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select one", "Carretilla", "Buque de guerra", "Vehiculo", "Dedal", "Zapato antiguo", "Perro terrier", "Sombrero de copa", "Plancha" }));
+        getContentPane().add(piecePlayer, new org.netbeans.lib.awtextra.AbsoluteConstraints(481, 47, -1, -1));
 
-        jButton1.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(0, 153, 0));
-        jButton1.setText("Login");
+        logInBtn.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        logInBtn.setForeground(new java.awt.Color(0, 153, 0));
+        logInBtn.setText("Login");
+        logInBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logInBtnActionPerformed(evt);
+            }
+        });
+        getContentPane().add(logInBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(631, 46, -1, -1));
+
+        pieceImg.setToolTipText("");
+        pieceImg.setMaximumSize(new java.awt.Dimension(20, 20));
+        pieceImg.setMinimumSize(new java.awt.Dimension(20, 20));
+        pieceImg.setPreferredSize(new java.awt.Dimension(20, 20));
+        getContentPane().add(pieceImg, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 620, 35, 35));
+        pieceImg.getAccessibleContext().setAccessibleName("");
+
+        getContentPane().add(tableroMonopoly, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 82, 1010, 628));
 
         logOutBtn.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         logOutBtn.setForeground(new java.awt.Color(255, 0, 0));
         logOutBtn.setText("Logout");
+        getContentPane().add(logOutBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(704, 46, -1, -1));
 
         startGameBtn.setBackground(new java.awt.Color(204, 0, 0));
         startGameBtn.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
@@ -87,6 +115,7 @@ public class MonopolyForm extends javax.swing.JFrame {
                 startGameBtnActionPerformed(evt);
             }
         });
+        getContentPane().add(startGameBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(801, 30, 170, -1));
 
         tossDiceBtn.setBackground(new java.awt.Color(0, 0, 0));
         tossDiceBtn.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
@@ -188,64 +217,7 @@ public class MonopolyForm extends javax.swing.JFrame {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(471, 471, 471)
-                                .addComponent(jLabel1))
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(host, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(connectHostBtn)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(figurePlayer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(logOutBtn)))
-                        .addGap(26, 26, 26)
-                        .addComponent(startGameBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(tableroMonopoly, javax.swing.GroupLayout.PREFERRED_SIZE, 1010, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(host, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(connectHostBtn)
-                                    .addComponent(jLabel3)
-                                    .addComponent(figurePlayer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton1)
-                                    .addComponent(jLabel2)
-                                    .addComponent(logOutBtn)))
-                            .addComponent(startGameBtn, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(tableroMonopoly, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())))
-        );
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 11, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -254,6 +226,10 @@ public class MonopolyForm extends javax.swing.JFrame {
         ImageIcon imagenTablero = new ImageIcon("src/img/tableroMonopoly.jpg");
         Icon tablero= new ImageIcon(imagenTablero.getImage().getScaledInstance(tableroMonopoly.getWidth(), tableroMonopoly.getHeight(), Image.SCALE_DEFAULT));
         tableroMonopoly.setIcon(tablero);
+        
+        ImageIcon imagePiece = new ImageIcon(src);
+        Icon piece= new ImageIcon(imagePiece.getImage().getScaledInstance(pieceImg.getWidth(), pieceImg.getHeight(), Image.SCALE_DEFAULT));
+        pieceImg.setIcon(piece);
     }//GEN-LAST:event_startGameBtnActionPerformed
 
     private void tossDiceBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tossDiceBtnActionPerformed
@@ -261,7 +237,6 @@ public class MonopolyForm extends javax.swing.JFrame {
         ImageIcon dRight = new ImageIcon("src/img/Two.png");
         DialogTossDices dialog = new DialogTossDices(this, true, dLeft, dRight);
         dialog.getContentPane().setBackground(new Color(1, 2, 6));
-        dialog.getContentPane().setBackground(new Color(34, 139, 34));
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
     }//GEN-LAST:event_tossDiceBtnActionPerformed
@@ -270,10 +245,17 @@ public class MonopolyForm extends javax.swing.JFrame {
         ImageIcon img = new ImageIcon("src/img/SLN.png");
         DialogProperty dialog = new DialogProperty(this, true, img);
         dialog.getContentPane().setBackground(new Color(1, 2, 6));
-        dialog.getContentPane().setBackground(new Color(34, 139, 34));
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
     }//GEN-LAST:event_movePlayerBtnActionPerformed
+
+    private void logInBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logInBtnActionPerformed
+        if(piecePlayer.getSelectedItem().equals("Select one")){
+            JOptionPane.showMessageDialog(null, "No has seleccionado una pieza.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        else
+            src="src/img/"+piecePlayer.getSelectedItem()+".png";
+    }//GEN-LAST:event_logInBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -311,9 +293,7 @@ public class MonopolyForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton connectHostBtn;
-    private javax.swing.JComboBox<String> figurePlayer;
     private javax.swing.JTextField host;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -323,8 +303,11 @@ public class MonopolyForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JButton logInBtn;
     private javax.swing.JButton logOutBtn;
     private javax.swing.JButton movePlayerBtn;
+    private javax.swing.JLabel pieceImg;
+    private javax.swing.JComboBox<String> piecePlayer;
     private javax.swing.JTextArea recordZone;
     private javax.swing.JButton startGameBtn;
     private javax.swing.JLabel tableroMonopoly;

@@ -47,13 +47,11 @@ public class DialogProperty extends javax.swing.JDialog {
         propertyImg = new javax.swing.JLabel();
         auctionBtn = new javax.swing.JButton();
         buyBtn = new javax.swing.JButton();
-        payRentBtn = new javax.swing.JButton();
-        mortgageBtn = new javax.swing.JButton();
-        payMortgageBtn = new javax.swing.JButton();
-        buyHouseBtn = new javax.swing.JButton();
-        sellHouseBtn = new javax.swing.JButton();
+        close = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Property Title");
+        setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -87,25 +85,14 @@ public class DialogProperty extends javax.swing.JDialog {
         buyBtn.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         buyBtn.setText("Buy");
 
-        payRentBtn.setBackground(new java.awt.Color(195, 194, 194));
-        payRentBtn.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        payRentBtn.setText("Pay rent");
-
-        mortgageBtn.setBackground(new java.awt.Color(195, 194, 194));
-        mortgageBtn.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        mortgageBtn.setText("Mortgage");
-
-        payMortgageBtn.setBackground(new java.awt.Color(195, 194, 194));
-        payMortgageBtn.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        payMortgageBtn.setText("Pay mortgage");
-
-        buyHouseBtn.setBackground(new java.awt.Color(195, 194, 194));
-        buyHouseBtn.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        buyHouseBtn.setText("Buy house");
-
-        sellHouseBtn.setBackground(new java.awt.Color(195, 194, 194));
-        sellHouseBtn.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        sellHouseBtn.setText("Sell house");
+        close.setBackground(new java.awt.Color(255, 0, 0));
+        close.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        close.setText("Close");
+        close.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closeActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -114,44 +101,33 @@ public class DialogProperty extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(58, 58, 58)
-                        .addComponent(propertyImg, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(73, 73, 73)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(propertyName)
-                            .addComponent(price)
-                            .addComponent(owner)))
-                    .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(buyBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(auctionBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(31, 31, 31)
+                        .addComponent(auctionBtn)
+                        .addGap(62, 62, 62)
+                        .addComponent(buyBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(close))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(payRentBtn)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(buyHouseBtn)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(mortgageBtn))
+                                .addGap(58, 58, 58)
+                                .addComponent(propertyImg, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(sellHouseBtn)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                                .addComponent(payMortgageBtn)))))
+                                .addGap(73, 73, 73)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(propertyName)
+                                    .addComponent(price)
+                                    .addComponent(owner))))
+                        .addGap(0, 59, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {mortgageBtn, payMortgageBtn});
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {buyHouseBtn, sellHouseBtn});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {auctionBtn, buyBtn, close});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -173,35 +149,30 @@ public class DialogProperty extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(auctionBtn)
-                    .addComponent(mortgageBtn)
-                    .addComponent(buyHouseBtn))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buyBtn)
-                    .addComponent(payMortgageBtn)
-                    .addComponent(sellHouseBtn))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
-                .addComponent(payRentBtn)
-                .addContainerGap())
+                    .addComponent(close))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {auctionBtn, buyBtn, close});
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void closeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_closeActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton auctionBtn;
     private javax.swing.JButton buyBtn;
-    private javax.swing.JButton buyHouseBtn;
+    private javax.swing.JButton close;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JButton mortgageBtn;
     private javax.swing.JLabel owner;
-    private javax.swing.JButton payMortgageBtn;
-    private javax.swing.JButton payRentBtn;
     private javax.swing.JLabel price;
     private javax.swing.JLabel propertyImg;
     private javax.swing.JLabel propertyName;
-    private javax.swing.JButton sellHouseBtn;
     // End of variables declaration//GEN-END:variables
 }

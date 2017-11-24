@@ -30,6 +30,8 @@ public class DialogTossDices extends javax.swing.JDialog {
         diceRight = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Dice result");
+        setResizable(false);
 
         diceLeft.setForeground(new java.awt.Color(255, 255, 255));
         diceLeft.setText(" ");
