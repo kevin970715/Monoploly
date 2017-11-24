@@ -1,7 +1,12 @@
 package client;
 
+import interfaces.MonopolyInterface;
 import java.awt.Color;
 import java.awt.Image;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -12,13 +17,16 @@ import javax.swing.JOptionPane;
  */
 public class MonopolyForm extends javax.swing.JFrame {
 
-    /**
-     * Creates new form MonopolyForm
-     */
     String src;
-    
+    String name;
+    MonopolyInterface mi;
     public MonopolyForm() {
         initComponents();
+        logInBtn.setEnabled(false);
+        logOutBtn.setEnabled(false);
+        startGameBtn.setEnabled(false);
+        tossDiceBtn.setEnabled(false);
+        movePlayerBtn.setEnabled(false);
         this.getContentPane().setBackground(new Color(1, 2, 6));
         jPanel1.setBackground(new Color(34, 139, 34));
         pieceImg.setFocusable(true);
@@ -74,6 +82,11 @@ public class MonopolyForm extends javax.swing.JFrame {
         connectHostBtn.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         connectHostBtn.setForeground(new java.awt.Color(0, 0, 204));
         connectHostBtn.setText("Connect");
+        connectHostBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                connectHostBtnActionPerformed(evt);
+            }
+        });
         getContentPane().add(connectHostBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(194, 46, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Consolas", 1, 18)); // NOI18N
@@ -253,10 +266,22 @@ public class MonopolyForm extends javax.swing.JFrame {
     private void logInBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logInBtnActionPerformed
         if(piecePlayer.getSelectedItem().equals("Select one")){
             JOptionPane.showMessageDialog(null, "No has seleccionado una pieza.", "Error", JOptionPane.ERROR_MESSAGE);
+        }else{
+            name=(String) piecePlayer.getSelectedItem();
+            src="src/img/"+name+".png";
         }
-        else
-            src="src/img/"+piecePlayer.getSelectedItem()+".png";
     }//GEN-LAST:event_logInBtnActionPerformed
+
+    private void connectHostBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectHostBtnActionPerformed
+        try {
+            String hostName=host.getText();
+            mi=(MonopolyInterface) Naming.lookup("rmi://"+hostName+"/monopoly");
+            logInBtn.setEnabled(true);
+            connectHostBtn.setEnabled(false);
+        } catch (MalformedURLException | NotBoundException | RemoteException ex) {
+            JOptionPane.showMessageDialog(null, "Error en la conexión", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_connectHostBtnActionPerformed
 
     /**
      * @param args the command line arguments
