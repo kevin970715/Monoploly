@@ -9,14 +9,40 @@ public class Board extends UnicastRemoteObject implements MonopolyInterface{
         Die die;
         ArrayList<Player> players;
         ArrayList<Square> squares;
+        ArrayList<String> possiblesNames;
         ArrayList<String> verifyDoubles;
         boolean gameInit=false;
+        
         public Board() throws RemoteException{
             currentTurn = 0;
             die = new Die();
             players = new ArrayList<>();
             squares = new ArrayList<>();
             verifyDoubles=new ArrayList<>();
+            possiblesNames=new ArrayList<>();
+            possiblesNames.add("Select one");
+            possiblesNames.add("Carretilla");
+            possiblesNames.add("Buque de guerra");
+            possiblesNames.add("Vehiculo");
+            possiblesNames.add("Dedal");
+            possiblesNames.add("Zapato antiguo");
+            possiblesNames.add("Perro terrier");
+            possiblesNames.add("Sombrero de copa");
+            possiblesNames.add("Plancha");
+        }
+        
+        @Override
+        public ArrayList<String> getPossiblesNames() throws RemoteException{
+            return possiblesNames;
+        }
+        
+        @Override
+        public void removePossiblesNames(String name) throws RemoteException{
+            int i=0;
+            for(i=0; i<possiblesNames.size(); i++)
+                if(possiblesNames.get(i).equals(name))
+                    break;
+            possiblesNames.remove(i);
         }
         
         @Override
@@ -59,8 +85,10 @@ public class Board extends UnicastRemoteObject implements MonopolyInterface{
         
         @Override
         public boolean startGame() throws RemoteException {
-            if(players.size()<2)
+            if(players.size()<2){
+                players.get(0).addMessage("No hay suficicientes jugadores para iniciar");
                 return false;
+            }
             squares.add(new Square("GO"));
             squares.add(new Square("San luis norte",60,"brown",2,10,30,90,160,250,30,50));
             squares.add(new Square("Community chest"));
@@ -101,34 +129,8 @@ public class Board extends UnicastRemoteObject implements MonopolyInterface{
             squares.add(new Square("Buenos aires norte",350,"blue",35,175,500,1100,1300,1500,175,200));
             squares.add(new Square("Luxury Tax"));
             squares.add(new Square("Buenos aires sur",400,"blue",50,200,600,1400,1700,2000,200,200));
+            messageAllPlayer(players.get(0).getName(),"El juego a iniciado");
             return gameInit=true;
-        }
-        
-        @Override
-        public synchronized void raffleTheServe(String name, int face1, int face2) throws RemoteException {
-            Player player=getPlayer(name);
-            int mayor=0,pos=0;
-            if(gameInit){
-                player.setRaffle(face1, face2);
-                for (int i = 0; i < players.size(); i++) {
-                    try {
-                        wait();
-                    } catch (InterruptedException ex) {}
-                }
-                
-                for (int i = 0; i < players.size(); i++)
-                    if(players.get(i).getRaffle()>mayor)
-                        pos=i;
-                        
-                currentTurn=pos;
-                name=getCurrentPlayer().getName();
-                messageAllPlayer(name,"El saque es para "+name);
-            }
-        }
-        
-        @Override
-        public synchronized void notification() throws RemoteException{
-            notifyAll();
         }
 
         @Override
@@ -222,7 +224,7 @@ public class Board extends UnicastRemoteObject implements MonopolyInterface{
 	}
 
         @Override
-	public ArrayList<Player> getPlayers() {
+	public ArrayList<Player> getPlayers() throws RemoteException{
             return players;
 	} 
         
@@ -279,18 +281,39 @@ public class Board extends UnicastRemoteObject implements MonopolyInterface{
             return data;  
         }
         
-        public int movePlayer(String name, int face1, int face2) {
+        @Override
+        public String getMessage(String name) throws RemoteException{
+            int index=-1;
+            String msg = null;
+            //Se busca el usuario por el nombre
+            for(int i=0; i<players.size(); i++)
+                if(players.get(i).getName().equals(name))
+                    index=i;
+
+            if (index > -1)
+                msg=players.get(index).getMessage();
+
+            return msg;
+        }
+        
+        @Override
+	public String getTurn() throws RemoteException{
+            return players.get(currentTurn).getName();
+        }
+        
+        @Override
+        public int movePlayer(String name, int face1, int face2) throws RemoteException{
             int result=0;
             if (gameInit){//si el juego inició
                 if (players.get(currentTurn).getName().equals(name))//si es mi turno 
-                    result=movePlayer(players.get(currentTurn), face1, face2);//se llama a mePlayer para mover y que devuelva la nueva posición
+                    result=movePlayer2(players.get(currentTurn), face1, face2);//se llama a mePlayer para mover y que devuelva la nueva posición
                 else
                     getPlayer(name).addMessage("No es tu turno aun");
             }else{ getPlayer(name).addMessage("El juego no ha iniciado aún"); }
             return result;
         }
 
-        public int movePlayer(Player player, int face1,int face2) {
+        public int movePlayer2(Player player, int face1,int face2) {
             int face=face1+face2, newPosition=player.getCurrentPosition();
             if(player.isBrokeOut()){ return player.getCurrentPosition(); }
             if(face1==face2){//desde aquí
@@ -336,11 +359,13 @@ public class Board extends UnicastRemoteObject implements MonopolyInterface{
 	
         public void action(Player player,int face1,int face2,int newPosition){
             Square square=squares.get(newPosition);
+            Player owner=null;
             if ((player.getCurrentPosition() + face1+face2)>40) {
                 player.getMoney().addMoney(200);
                 player.addMessage("+200 monedas por pasar por go");
             }
-            Player owner=players.get(indexPlayer(square.getOwner()));
+            if(square.isHaveOwner())
+                owner=players.get(indexPlayer(square.getOwner()));
             
             switch(newPosition){
                 case 0:
@@ -353,16 +378,15 @@ public class Board extends UnicastRemoteObject implements MonopolyInterface{
                     square.incomeTask(player, this);
                     break;
                 case 5: case 15: case 25: case 35:
-                    if(square.isHaveOwner() && !square.isMortgaged())
-                        square.collectRentTrain(player,owner,this);
+                    if(square.isHaveOwner() && !square.isMortgaged()){
+                        int hire=owner.getNumTrenes()*square.getChargePriceTrain();
+                        square.collectRentTrain(player,owner,this,hire);
+                    }
                     break;
                 case 7: case 12: case 22: case 36:
                     square.chance(player, this);
                     break;
-                case 10:
-                    break;
-                case 20:
-                    square.vacationAction(player, this);
+                case 10: case 20:
                     break;
                 case 30:
                     square.goToJailAction(player, this);
@@ -371,8 +395,10 @@ public class Board extends UnicastRemoteObject implements MonopolyInterface{
                     square.luxuryTax(player, this);
                     break;
                 default:
-                    if (square.isHaveOwner() && !square.isMortgaged())
-                        square.collectRentProperty(player,owner,this);
+                    if (square.isHaveOwner() && !square.isMortgaged()){
+                        int hire=square.getChargePriceProperty();
+                        square.collectRentProperty(player,owner,this,hire);
+                    }
                     break;
             }
         }
@@ -413,7 +439,7 @@ public class Board extends UnicastRemoteObject implements MonopolyInterface{
             if(++currentTurn >= players.size())
                 currentTurn = 0;
 	}
-	
+
 	public Player getPlayer(String name) {
             return players.get(indexPlayer(name));
 	}
@@ -423,16 +449,23 @@ public class Board extends UnicastRemoteObject implements MonopolyInterface{
 	}
         
         public int indexPlayer(String name) {
-            int i;
-            for (i = 0; i < players.size(); i++)
-                if (name.equals(players.get(i).getName()))
+            int index=-1;
+            for (int i = 0; i < players.size(); i++){
+                if (name.equals(players.get(i).getName())){
+                    index=i;
                     break;
-            return i;
+                }
+            }
+            return index;
         }
         
         public void messageAllPlayer(String name,String message){
             for(int i=0; i<players.size(); i++)//Se recorre a todos los usuarios
                 if(!players.get(i).getName().equals(name))
                     players.get(i).addMessage(message);//Se le deja el mensaje del remitente
+        }
+        
+        public static void main(String[] args) {
+        
         }
 }

@@ -1,9 +1,10 @@
 package server;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Square {
+public class Square implements Serializable{
 	String name=null;
 	String owner=null;
 	int price=0;
@@ -169,47 +170,39 @@ public class Square {
             player.getMoney().substractMoney(50);
         }
         
-	public void vacationAction(Player player, Board board) {
-		//Random rand = new Random();
-		//Square square = board.movePlayer(player, rand.nextInt(board.getTotalSquare()), false);
-		//Util.print(player, player.getName() + " has go to vacation at " + square.getName());
-	}
-        
         public void communityChestAction(Player player, Board board){
             player.addMessage("Caíste en arca comunal: -200 monedas");
-            board.messageAllPlayer(player.getName(),player.getName()+": -200 monedas");
+            board.messageAllPlayer(player.getName(),player.getName()+": -200 monedas por caer en arca comunal");
             player.getMoney().substractMoney(200);
         }
         
         public void incomeTask(Player player,Board board){
             player.addMessage("Impuesto sobre la renta: -200 monedas");
-            board.messageAllPlayer(player.getName(),player.getName()+": -200 monedas");
+            board.messageAllPlayer(player.getName(),player.getName()+": -200 monedas por impuesto sobre la renta");
             player.getMoney().substractMoney(200);
         }
         
         public void chance(Player player,Board board){
             player.addMessage("Caíste en casualidad: +200 monedas");
-            board.messageAllPlayer(player.getName(),player.getName()+": +200 monedas");
+            board.messageAllPlayer(player.getName(),player.getName()+": +200 monedas por caer en casualidad");
             player.getMoney().addMoney(200);
         }
         
         public void luxuryTax(Player player, Board board){
             player.addMessage("Impuesto de lujo: -100 monedas");
-            board.messageAllPlayer(player.getName(),player.getName()+": -100 monedas");
+            board.messageAllPlayer(player.getName(),player.getName()+": -100 monedas por impuesto de lujo");
             player.getMoney().substractMoney(100);
         }
         
-        public void collectRentProperty(Player player, Player owner, Board board){
-            int hire=this.getChargePriceProperty();
+        public void collectRentProperty(Player player, Player owner, Board board, int hire){
             player.getMoney().substractMoney(hire);
-            player.addMessage("-"+hire+" por la renta");
-            board.messageAllPlayer(player.getName(),player.getName()+": -"+hire+" por renta");
+            player.addMessage("-"+hire+" por la renta de una propiedad");
+            board.messageAllPlayer(player.getName(),player.getName()+": -"+hire+" por renta de una propiedad");
             owner.getMoney().addMoney(hire);
             owner.addMessage("+"+hire+" por renta cobrada");
         }
         
-        public void collectRentTrain(Player player,Player owner,Board board){
-            int hire=owner.getNumTrenes()*this.getChargePriceTrain();
+        public void collectRentTrain(Player player,Player owner,Board board, int hire){
             player.getMoney().substractMoney(hire);
             player.addMessage("-"+hire+" por la renta de tren");
             board.messageAllPlayer(player.getName(),player.getName()+": -"+hire+" por renta de tren");
