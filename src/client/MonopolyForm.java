@@ -23,6 +23,10 @@ import server.Player;
 public class MonopolyForm extends javax.swing.JFrame {
 
     String src;
+    int x;
+    int y;
+    int actSquare;
+    int finSquare;
     String name;
     MonopolyInterface mi;
     DefaultListModel model;
@@ -120,7 +124,7 @@ public class MonopolyForm extends javax.swing.JFrame {
         pieceImg.setMaximumSize(new java.awt.Dimension(20, 20));
         pieceImg.setMinimumSize(new java.awt.Dimension(20, 20));
         pieceImg.setPreferredSize(new java.awt.Dimension(20, 20));
-        getContentPane().add(pieceImg, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 620, 35, 35));
+        getContentPane().add(pieceImg, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 532, 35, 35));
         getContentPane().add(tableroMonopoly, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 82, 1010, 628));
 
         logOutBtn.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
@@ -307,6 +311,70 @@ public class MonopolyForm extends javax.swing.JFrame {
     }//GEN-LAST:event_tossDiceBtnActionPerformed
 
     private void movePlayerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_movePlayerBtnActionPerformed
+        actSquare = 38;//Posición actual de la ficha en el tablero (Square), se obtiene con getCurrentPosition del player
+        finSquare = 4;//Posición final de la ficha en el tablero (Square), se obtiene con moverFicha del player
+        x=pieceImg.getX();
+        y=pieceImg.getY();
+        
+        while (actSquare < finSquare) {
+            if(actSquare >= 0 && actSquare < 10){
+                x = (x-120)+35;
+            } else if (actSquare >= 10 && actSquare < 20){
+                y = (y-18)-35;
+            } else if (actSquare >= 20 && actSquare < 30){
+                x = (x+120)-35;
+            } else if (actSquare >= 30 && actSquare <= 39){
+                y = (y+18)+35;
+            }
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(MonopolyForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            pieceImg.setLocation(x, y);
+            JOptionPane.showMessageDialog(null, "X="+x+ " Y="+y, src, JOptionPane.WARNING_MESSAGE);
+            actSquare++;
+        }
+        
+        if(actSquare > finSquare){
+            int posAux = 40-actSquare;
+            
+            while(posAux >= 0){
+                if(posAux == 0){
+                    actSquare=0;
+                    break;
+                }
+                y = (y+18)+35;
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(MonopolyForm.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                pieceImg.setLocation(x, y);
+                posAux--;
+            }
+            
+            while (actSquare < finSquare) {
+                if(actSquare >= 0 && actSquare < 10){
+                    x = (x-120)+35;
+                } else if (actSquare >= 10 && actSquare < 20){
+                    y = (y-18)-35;
+                } else if (actSquare >= 20 && actSquare < 30){
+                    x = (x+120)-35;
+                } else if (actSquare >= 30 && actSquare <= 39){
+                    y = (y+18)+35;
+                }
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(MonopolyForm.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                pieceImg.setLocation(x, y);
+                JOptionPane.showMessageDialog(null, "X="+x+ " Y="+y, src, JOptionPane.WARNING_MESSAGE);
+                actSquare++;
+            }
+        }
+        
         int numCarta=0;
         String carta=null;
         try{
