@@ -3,13 +3,6 @@ package client;
 import interfaces.MonopolyInterface;
 import java.awt.Color;
 import java.awt.Image;
-<<<<<<< HEAD
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
-=======
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -23,7 +16,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import server.Player;
 
->>>>>>> 7fe0eacb4395143fe130e12b634f70e541388669
 /**
  *
  * @author Flia Alcalá Castro
@@ -31,19 +23,15 @@ import server.Player;
 public class MonopolyForm extends javax.swing.JFrame {
 
     String src;
-<<<<<<< HEAD
     int x;
     int y;
     int actSquare;
     int finSquare;
-    
-=======
     String name;
     MonopolyInterface mi;
     DefaultListModel model;
     ThreadClient thread;
     int face1,face2;
->>>>>>> 7fe0eacb4395143fe130e12b634f70e541388669
     public MonopolyForm() {
         initComponents();
         logInBtn.setEnabled(false);
@@ -54,11 +42,7 @@ public class MonopolyForm extends javax.swing.JFrame {
         this.getContentPane().setBackground(new Color(1, 2, 6));
         jPanel1.setBackground(new Color(34, 139, 34));
         pieceImg.setFocusable(true);
-<<<<<<< HEAD
-        
-=======
         model = new DefaultListModel();
->>>>>>> 7fe0eacb4395143fe130e12b634f70e541388669
     }
 
     @SuppressWarnings("unchecked")
@@ -327,7 +311,6 @@ public class MonopolyForm extends javax.swing.JFrame {
     }//GEN-LAST:event_tossDiceBtnActionPerformed
 
     private void movePlayerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_movePlayerBtnActionPerformed
-<<<<<<< HEAD
         actSquare = 38;//Posición actual de la ficha en el tablero (Square), se obtiene con getCurrentPosition del player
         finSquare = 4;//Posición final de la ficha en el tablero (Square), se obtiene con moverFicha del player
         x=pieceImg.getX();
@@ -391,13 +374,7 @@ public class MonopolyForm extends javax.swing.JFrame {
                 actSquare++;
             }
         }
-        ImageIcon img = new ImageIcon("src/img/SLN.png");
-        DialogProperty dialog = new DialogProperty(this, true, img);
-        dialog.getContentPane().setBackground(new Color(1, 2, 6));
-        dialog.setLocationRelativeTo(null);
-        dialog.setVisible(true);
         
-=======
         int numCarta=0;
         String carta=null;
         try{
@@ -419,7 +396,6 @@ public class MonopolyForm extends javax.swing.JFrame {
             dialog.setVisible(true);
         }
         movePlayerBtn.setEnabled(false);
->>>>>>> 7fe0eacb4395143fe130e12b634f70e541388669
     }//GEN-LAST:event_movePlayerBtnActionPerformed
 
     private void logInBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logInBtnActionPerformed
