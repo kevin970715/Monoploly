@@ -23,10 +23,9 @@ public class Board extends UnicastRemoteObject implements MonopolyInterface{
         public boolean logIn(String name) throws RemoteException {
             boolean creado=false;
             if(players.size()<4){
-                for(int i=0; i<players.size(); i++)
-                    if(players.get(i).getName().equals(name))
+                for (Player player : players) 
+                    if (player.getName().equals(name))
                         return creado;
-
                 players.add(new Player(name));
                 messageAllPlayer(name,name+" inició sesión");
                 creado=true;
@@ -39,14 +38,20 @@ public class Board extends UnicastRemoteObject implements MonopolyInterface{
             boolean result=false;
             int index=-1;
             //Se busca el usuario por el nombre
-            for(int i=0; i<players.size(); i++)
-                if(players.get(i).getName().equals(name))
+            for(int i=0; i<players.size(); i++){
+                if(players.get(i).getName().equals(name)){
                     index=i;
+                    break;
+                }
+            }
 
             if (index > -1){//Si existe usuario a eliminar
                 messageAllPlayer(name, name +" ha abandonado el juego");
                 players.remove(index);
-                currentTurn=index;
+                if (index==players.size()-1)
+                    currentTurn=index-1;
+                else
+                    currentTurn=index;
                 result=true;
             }
             return result;
@@ -176,20 +181,33 @@ public class Board extends UnicastRemoteObject implements MonopolyInterface{
         
         @Override
         public String buyProperty(String name, String nameProperty) throws RemoteException {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            String data=null;
+            for (Square square : squares) {
+                if (square.getName().equals(nameProperty)) {
+                    if(!square.isHaveOwner()){
+                        if(getPlayer(name).getMoney().getMoney()>=square.getPrice()){
+                            getPlayer(name).getMoney().substractMoney(square.getPrice());
+                            square.setOwner(name);
+                            data= "-"+square.getPrice()+" por la propiedad";
+                            break;
+                        }else{ data="No posees dinero suficiente para comprar esta propiedad"; }
+                    }else{ data="La propiedad ya tiene dueño"; }
+                }            
+            }
+            return data;
         }
         
         @Override
         public String buyTrain(String name, String nameTrain) throws RemoteException{
             String data=null;
-            for (int i = 0; i < squares.size(); i++) {
-                if (squares.get(i).getName().equals(nameTrain)) {
-                    if(!squares.get(i).isHaveOwner()){
-                        if(getPlayer(name).getMoney().getMoney()>=squares.get(i).getPrice()){
-                            getPlayer(name).getMoney().substractMoney(squares.get(i).getPrice());
+            for (Square square : squares) {
+                if (square.getName().equals(nameTrain)) {
+                    if(!square.isHaveOwner()){
+                        if(getPlayer(name).getMoney().getMoney()>=square.getPrice()){
+                            getPlayer(name).getMoney().substractMoney(square.getPrice());
                             getPlayer(name).addTren();
-                            squares.get(i).setOwner(name);
-                            data= "-"+squares.get(i).getPrice()+" por el tren";
+                            square.setOwner(name);
+                            data= "-"+square.getPrice()+" por el tren";
                             break;
                         }else{ data="No posees dinero suficiente para comprar el tren"; }
                     }else{ data="El tren ya tiene dueño"; }
@@ -206,13 +224,7 @@ public class Board extends UnicastRemoteObject implements MonopolyInterface{
         @Override
 	public ArrayList<Player> getPlayers() {
             return players;
-	}
-        
-        @Override
-        public void brokeOut(String name) throws RemoteException {
-            Player player=getPlayer(name);
-            player.setBrokeOut(true);
-        } 
+	} 
         
         @Override
         public String auction(String name, String nameProperty) throws RemoteException {
@@ -220,13 +232,51 @@ public class Board extends UnicastRemoteObject implements MonopolyInterface{
         }
 
         @Override
-        public String morgage(String name, String nameProperty) throws RemoteException {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        public String morgage(String name, String nameProperty, boolean property) throws RemoteException {
+            String data=null;
+            for (Square square : squares) {
+                if (square.getName().equals(nameProperty)) {//se busca la propiedad
+                    if (square.getOwner().equals(name) && !square.isMortgaged()) {//cuando se encuentre, se pregunta si es el dueño
+                        if (property){
+                            int charge=square.getMortgage()+square.getHousePrice()*square.getNumHouses();
+                            getPlayer(name).getMoney().addMoney(charge); 
+                            data="Has hipotecado la propiedad por "+charge+" monedas";
+                        }else{
+                            getPlayer(name).getMoney().addMoney(square.getMortgage());
+                            data="Has hipotecado el tren por "+square.getMortgage()+" monedas";
+                        }
+                        square.setMortgaged(true);
+                        break;
+                    }else{
+                        return "Esta no es tu propiedad o ya ha sido hipotecada";
+                    }
+                }
+            }
+            return data;
         }
 
         @Override
-        public String removeMorgage(String name, String nameProperty) throws RemoteException {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        public String removeMorgage(String name, String nameProperty, boolean property) throws RemoteException {
+            String data=null;
+            for (Square square : squares) {
+                if (square.getName().equals(nameProperty)) {//se busca la propiedad
+                    if (square.getOwner().equals(name) && square.isMortgaged()) {//cuando se encuentre, se pregunta si es el dueño
+                        if (property){
+                            int charge=square.getMortgage()+square.getHousePrice()*square.getNumHouses();
+                            getPlayer(name).getMoney().substractMoney((int)(charge*1.1));
+                            data= "Se ha quitado la hipoteca de la propiedad";
+                        }else{
+                            getPlayer(name).getMoney().addMoney((int)(square.getMortgage()*1.1));
+                            data= "Se ha quitado la hipoteca del tren";
+                        }
+                        square.setMortgaged(false);
+                        break;
+                    }else{
+                        return "Esta no es tu propiedad";
+                    }
+                }
+            }
+            return data;  
         }
         
         public int movePlayer(String name, int face1, int face2) {
@@ -275,9 +325,9 @@ public class Board extends UnicastRemoteObject implements MonopolyInterface{
             
             if(player.getMoney().isBrokeOut()){
                 messageAllPlayer(player.getName(),player.getName() + " ha quedado en bancarrota!");
-                for (int i = 0; i < squares.size(); i++)
-                    if (squares.get(i).getOwner().equals(player.getName()))
-                        squares.get(i).reset();
+                for (Square square : squares)
+                    if (square.getOwner().equals(player.getName()))
+                        square.reset();
                 player.setBrokeOut(true);
             }
             if (face1!=face2){ nextTurn(); }
@@ -303,7 +353,8 @@ public class Board extends UnicastRemoteObject implements MonopolyInterface{
                     square.incomeTask(player, this);
                     break;
                 case 5: case 15: case 25: case 35:
-                    if(square.isHaveOwner()){square.collectRentTrain(player,owner,this);}
+                    if(square.isHaveOwner() && !square.isMortgaged())
+                        square.collectRentTrain(player,owner,this);
                     break;
                 case 7: case 12: case 22: case 36:
                     square.chance(player, this);
@@ -320,7 +371,8 @@ public class Board extends UnicastRemoteObject implements MonopolyInterface{
                     square.luxuryTax(player, this);
                     break;
                 default:
-                    if (square.isHaveOwner()){square.collectRentProperty(player,owner,this);}
+                    if (square.isHaveOwner() && !square.isMortgaged())
+                        square.collectRentProperty(player,owner,this);
                     break;
             }
         }
