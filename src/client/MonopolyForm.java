@@ -315,9 +315,30 @@ public class MonopolyForm extends javax.swing.JFrame {
             Logger.getLogger(MonopolyForm.class.getName()).log(Level.SEVERE, null, ex);
         }
         switch(numCarta){
-            
+            case 1:  carta="SLN"; break;
+            case 3:  carta="SLS"; break;
+            case 6:  carta="FE";  break;
+            case 8:  carta="FN";  break;
+            case 9:  carta="FS";  break;
+            case 11: carta="SJS"; break;
+            case 13: carta="SJE"; break;
+            case 14: carta="SJN"; break;
+            case 16: carta="NS";  break;
+            case 18: carta="NE";  break;
+            case 19: carta="NN";  break;
+            case 21: carta="ME";  break;
+            case 23: carta="MS";  break;
+            case 24: carta="MN";  break;
+            case 26: carta="SFE"; break;
+            case 27: carta="SFS"; break;
+            case 29: carta="SFN"; break;
+            case 31: carta="CE";  break;
+            case 32: carta="CS";  break;
+            case 34: carta="CN";  break;
+            case 37: carta="BAN"; break;
+            case 39: carta="BAS"; break;
             case 5: case 15: case 25: case 35:
-//trenes
+            //trenes
                 break;
         }
         if(carta!=null){
