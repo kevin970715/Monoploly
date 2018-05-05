@@ -51,15 +51,16 @@ public class Square implements Serializable{
                 this.chargePrices.put("hThreeHouse", hThreeHouse);
                 this.chargePrices.put("hFourHouse", hFourHouse);
                 this.chargePrices.put("withHotel", withHotel);
-                this.chargePrices.put("mortgage", mortgage);
-                
+                this.chargePrices.put("mortgage", mortgage);              
 	}
+        
         public String getName() {
 		return name;
         }
         	
 	public void setOwner(String owner) {
 		this.owner = owner;
+                this.haveOwner=true;
 	}
         
         public String getOwner(){
@@ -68,10 +69,6 @@ public class Square implements Serializable{
         
         public boolean isHaveOwner() {
             return haveOwner;
-        }
-
-        public void setHaveOwner(boolean haveOwner) {
-            this.haveOwner = haveOwner;
         }
         
 	public int getPrice() {
@@ -151,11 +148,12 @@ public class Square implements Serializable{
             player.getMoney().addMoney(400);
         }
         
-        public void goToJailAction(Player player, Board board) {
+        public int goToJailAction(Player player, Board board) {
             player.addMessage("has ido a la cárcel");
             board.messageAllPlayer(player.getName(),player.getName()+" ha ido a la cárcel");
             player.setInJail(true);
-            //board.movePlayer(player, -8, -12, false);
+            player.setCurrentPosition(10);
+            return 10;
         }
         
         public void jailAction1(Player player, Board board){

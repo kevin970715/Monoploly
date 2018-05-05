@@ -41,8 +41,10 @@ public class MonopolyForm extends javax.swing.JFrame {
         movePlayerBtn.setEnabled(false);
         this.getContentPane().setBackground(new Color(1, 2, 6));
         jPanel1.setBackground(new Color(34, 139, 34));
-        pieceImg.setFocusable(true);
         model = new DefaultListModel();
+        ImageIcon imagenTablero = new ImageIcon("src/img/tableroMonopoly.jpg");
+        Icon tablero= new ImageIcon(imagenTablero.getImage().getScaledInstance(tableroMonopoly.getWidth(), tableroMonopoly.getHeight(), Image.SCALE_DEFAULT));
+        tableroMonopoly.setIcon(tablero);
     }
 
     @SuppressWarnings("unchecked")
@@ -124,7 +126,7 @@ public class MonopolyForm extends javax.swing.JFrame {
         pieceImg.setMaximumSize(new java.awt.Dimension(20, 20));
         pieceImg.setMinimumSize(new java.awt.Dimension(20, 20));
         pieceImg.setPreferredSize(new java.awt.Dimension(20, 20));
-        getContentPane().add(pieceImg, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 532, 35, 35));
+        getContentPane().add(pieceImg, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 630, 35, 35));
         getContentPane().add(tableroMonopoly, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 82, 1010, 628));
 
         logOutBtn.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
@@ -251,7 +253,7 @@ public class MonopolyForm extends javax.swing.JFrame {
     public void addPlayers(ArrayList<Player> players){
         model.removeAllElements();
         for (Player player : players)
-            model.addElement(player.getName()+", "+player.getMoney().getMoney());
+            model.addElement(player.getName()+", "+player.getMoney().getMoney()+","+player.getCurrentPosition());
         jList1.setModel(model);
     }
 
@@ -266,10 +268,28 @@ public class MonopolyForm extends javax.swing.JFrame {
         }
     }
     
+    public void buyProperty(String name1, String nameProperty) throws RemoteException{
+        mi.buyProperty(name1, nameProperty);
+    }
+    
+    public void morgage(String nameProperty, boolean x) throws RemoteException{
+        mi.morgage(name, nameProperty, x);
+    }
+    
+    public void buyHouse(String nameProperty) throws RemoteException{
+        mi.buyHouse(name, nameProperty);
+    }
+    
+    public void removeMorgage(String nameProperty, boolean property) throws RemoteException{
+        mi.removeMorgage(name, nameProperty, property);
+    }
+    
     private void startGameBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startGameBtnActionPerformed
         try {
-            if(mi.startGame())
+            if(mi.startGame()){
                 startGameBtn.setEnabled(false);
+                mi.getPlayer(name).addMessage("Has iniciado el juego");
+            }
         } catch (RemoteException ex) {
             Logger.getLogger(MonopolyForm.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -282,7 +302,6 @@ public class MonopolyForm extends javax.swing.JFrame {
             if(mi.getTurn().equals(name))
                 movePlayerBtn.setEnabled(true);        
         } catch (RemoteException ex) {
-            ex.printStackTrace();
         }
         String nameImg = null;
         String nameImg2 = null; 
@@ -311,33 +330,54 @@ public class MonopolyForm extends javax.swing.JFrame {
     }//GEN-LAST:event_tossDiceBtnActionPerformed
 
     private void movePlayerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_movePlayerBtnActionPerformed
-        actSquare = 38;//Posición actual de la ficha en el tablero (Square), se obtiene con getCurrentPosition del player
-        finSquare = 4;//Posición final de la ficha en el tablero (Square), se obtiene con moverFicha del player
-        x=pieceImg.getX();
-        y=pieceImg.getY();
-        
-        while (actSquare < finSquare) {
-            if(actSquare >= 0 && actSquare < 10){
-                x = (x-120)+35;
-            } else if (actSquare >= 10 && actSquare < 20){
-                y = (y-18)-35;
-            } else if (actSquare >= 20 && actSquare < 30){
-                x = (x+120)-35;
-            } else if (actSquare >= 30 && actSquare <= 39){
-                y = (y+18)+35;
-            }
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(MonopolyForm.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            pieceImg.setLocation(x, y);
-            JOptionPane.showMessageDialog(null, "X="+x+ " Y="+y, src, JOptionPane.WARNING_MESSAGE);
-            actSquare++;
+        int numCarta=0;
+        String carta=null;
+        try{
+            actSquare = mi.getPlayer(name).getCurrentPosition();        //Posición actual de la ficha en el tablero (Square), se obtiene con getCurrentPosition del player
+            numCarta=mi.movePlayer(name, face1, face2);
+            finSquare = numCarta;//Posición final de la ficha en el tablero (Square), se obtiene con moverFicha del player
+        } catch (RemoteException ex) {
+            Logger.getLogger(MonopolyForm.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        if(actSquare > finSquare){
-            int posAux = 40-actSquare;
+            System.out.print(actSquare+"|"+finSquare);
+//        x=pieceImg.getX();
+//        y=pieceImg.getY();
+//        if(actSquare < finSquare){
+//            while (actSquare < finSquare) {
+//                JOptionPane.showMessageDialog(null, "Click para mover la ficha", "ok", JOptionPane.PLAIN_MESSAGE);
+//                if(actSquare >= 0 && actSquare < 10){
+//                    x -=85;
+//                } else if (actSquare >= 10 && actSquare < 20){
+//                    y -=53;
+//                } else if (actSquare >= 20 && actSquare < 30){
+//                    x +=85;
+//                } else if (actSquare >= 30 && actSquare < 40){
+//                    y +=53;
+//                }
+//                pieceImg.setLocation(x, y);
+//                this.repaint();
+//                actSquare++;
+//            }
+//        }else{
+//            int posAux = 40-(actSquare-finSquare);
+//             while(posAux >= 0){
+//                JOptionPane.showMessageDialog(null, "Click para mover la ficha", "ok", JOptionPane.PLAIN_MESSAGE);
+//                if(actSquare >= 0 && actSquare < 10){
+//                    x -=85;
+//                } else if (actSquare >= 10 && actSquare < 20){
+//                    y -=53;
+//                } else if (actSquare >= 20 && actSquare < 30){
+//                    x +=85;
+//                } else if (actSquare >= 30 && actSquare <40){
+//                    y +=53;
+//                }
+//                pieceImg.setLocation(x, y);
+//                this.repaint();
+//                posAux--;
+//            }   
+//        }  
+  /*      if(actSquare > finSquare){
+            int posAux = 40-(actSquare-finSquare);  
             
             while(posAux >= 0){
                 if(posAux == 0){
@@ -345,12 +385,8 @@ public class MonopolyForm extends javax.swing.JFrame {
                     break;
                 }
                 y = (y+18)+35;
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(MonopolyForm.class.getName()).log(Level.SEVERE, null, ex);
-                }
                 pieceImg.setLocation(x, y);
+                this.repaint();
                 posAux--;
             }
             
@@ -364,24 +400,11 @@ public class MonopolyForm extends javax.swing.JFrame {
                 } else if (actSquare >= 30 && actSquare <= 39){
                     y = (y+18)+35;
                 }
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(MonopolyForm.class.getName()).log(Level.SEVERE, null, ex);
-                }
                 pieceImg.setLocation(x, y);
-                JOptionPane.showMessageDialog(null, "X="+x+ " Y="+y, src, JOptionPane.WARNING_MESSAGE);
+                this.repaint();
                 actSquare++;
             }
-        }
-        
-        int numCarta=0;
-        String carta=null;
-        try{
-            numCarta=mi.movePlayer(name, face1, face2);
-        } catch (RemoteException ex) {
-            Logger.getLogger(MonopolyForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
         switch(numCarta){
             case 1:  carta="SLN"; break;
             case 3:  carta="SLS"; break;
@@ -405,16 +428,29 @@ public class MonopolyForm extends javax.swing.JFrame {
             case 34: carta="CN";  break;
             case 37: carta="BAN"; break;
             case 39: carta="BAS"; break;
-            case 5: case 15: case 25: case 35:
-            //trenes
-                break;
+            case 5:  carta="trenSur";   break;
+            case 15: carta="trenNorte"; break;
+            case 25: carta="trenEste";  break;
+            case 35: carta="trenOeste"; break;
         }
         if(carta!=null){
-            ImageIcon img = new ImageIcon("src/img/"+carta+".png");
-            DialogProperty dialog = new DialogProperty(this, true, img);
-            dialog.getContentPane().setBackground(new Color(1, 2, 6));
-            dialog.setLocationRelativeTo(null);
-            dialog.setVisible(true);
+            try {
+                ImageIcon img = new ImageIcon("src/img/"+carta+".png");
+                DialogProperty dialog;
+                switch(numCarta){
+                    case 5: case 15: case 25: case 35://trenes
+                        dialog = new DialogProperty(this, true, img,mi.getSquare(numCarta),mi.getPlayer(name),false);
+                        break;
+                    default://propiedades
+                        dialog = new DialogProperty(this, true, img,mi.getSquare(numCarta),mi.getPlayer(name),true);
+                        break;
+                }
+                dialog.getContentPane().setBackground(new Color(1, 2, 6));
+                dialog.setLocationRelativeTo(null);
+                dialog.setVisible(true);
+            } catch (RemoteException ex) {
+                Logger.getLogger(MonopolyForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         movePlayerBtn.setEnabled(false);
     }//GEN-LAST:event_movePlayerBtnActionPerformed
@@ -437,12 +473,11 @@ public class MonopolyForm extends javax.swing.JFrame {
                     logInBtn.setEnabled(false);
                     thread = new ThreadClient(this,mi,name);
                     thread.start();
-                    ImageIcon imagenTablero = new ImageIcon("src/img/tableroMonopoly.jpg");
-                    Icon tablero= new ImageIcon(imagenTablero.getImage().getScaledInstance(tableroMonopoly.getWidth(), tableroMonopoly.getHeight(), Image.SCALE_DEFAULT));
-                    tableroMonopoly.setIcon(tablero);
                     ImageIcon imagePiece = new ImageIcon(src);
                     Icon piece= new ImageIcon(imagePiece.getImage().getScaledInstance(pieceImg.getWidth(), pieceImg.getHeight(), Image.SCALE_DEFAULT));
                     pieceImg.setIcon(piece);
+                    pieceImg.setVisible(true);
+                    pieceImg.setFocusable(true);
                 }else{
                     JOptionPane.showMessageDialog(null, "El nombre ya fue escogido. Seleccion otro.", "Escoge otro nombre", JOptionPane.ERROR_MESSAGE);
                 }
